@@ -1,4 +1,4 @@
-import 'package:adc/src/ui/_core/NamixCore.dart';
+import 'package:adc/src/ui/_core/app_colors2.dart';
 import 'package:adc/src/ui/_core/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: const Color.fromARGB(231, 5, 105, 117),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 60), // espaço do topo
-                  Image.asset('assets/banners/Logo_ADC.png', width: 192),
+                  Image.asset('assets/banners/Logo_ADC_Semfundo.png', width: 192),
                   const SizedBox(height: 30),
                   const Text(
                     "Digite os dados de acesso nos campos abaixo.",
