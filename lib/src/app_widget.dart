@@ -1,4 +1,4 @@
-import 'package:adc/models/pages/page_home.dart';
+import 'package:adc/src/ui/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -6,12 +6,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'A.D.C - Antes de Dirigir Check',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(),
+      routerConfig: MyRoutes().rotas,
     );
   }
 }
