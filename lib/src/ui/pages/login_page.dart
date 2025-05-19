@@ -1,4 +1,5 @@
 import 'package:adc/src/ui/_core/app_colors2.dart';
+// ignore: unused_import
 import 'package:adc/src/ui/_core/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(231, 5, 105, 117),
+      backgroundColor: const Color(0xFF0f6b79),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 30),
                   const Text(
                     "Digite os dados de acesso nos campos abaixo.",
-                    style: TextStyle(color: Colors.black87, fontSize: 16),
+                    style: TextStyle(color: Color.fromARGB(255, 197, 197, 197), fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
@@ -42,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.all(15),
                     placeholder: "Digite o seu e-mail",
                     placeholderStyle:
-                        const TextStyle(color: Colors.black87, fontSize: 14),
-                    style: const TextStyle(color: Colors.black87, fontSize: 14),
+                        const TextStyle(color: Color.fromARGB(255, 197, 197, 197), fontSize: 14),
+                    style: const TextStyle(color: Color.fromARGB(221, 222, 221, 221), fontSize: 14),
                     decoration: const BoxDecoration(
                       color: Colors.black12,
                       borderRadius: BorderRadius.all(Radius.circular(7)),
@@ -55,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                     placeholder: "Digite sua senha",
                     obscureText: true,
                     placeholderStyle:
-                        const TextStyle(color: Colors.black87, fontSize: 14),
+                        const TextStyle(color: Color.fromARGB(255, 197, 197, 197), fontSize: 14),
                     style: const TextStyle(color: Colors.black87, fontSize: 14),
                     decoration: const BoxDecoration(
                       color: Colors.black12,
@@ -75,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text(
                           "Acessar",
                           style: TextStyle(
-                            color: Colors.black87,
+                            color: Color.fromARGB(255, 197, 197, 197),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
