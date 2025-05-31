@@ -1,6 +1,11 @@
+import 'dart:io';
+import 'package:adc/src/ui/pages/config.dart';
+import 'package:adc/src/ui/pages/perfil_page.dart';
 import 'package:flutter/material.dart';
-// ignore: unused_import
+import 'vehicle_register_page.dart';
 import 'checklist_page.dart';
+
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -9,28 +14,62 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+  String? _lastCarImagePath;
+
+void _onItemTapped(int index) async {
+  if (index == 1) {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const VehicleRegisterPage()),
+    );
+
+    if (result != null && result is String) {
+      setState(() {
+        _lastCarImagePath = result;
+      });
+    }
+  } else if (index == 3) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PerfilPage()),
+    );
+  } else if (index == 4) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SettingsPage()),
+    );
+  } else {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+}
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A4E58), // Cor um pouco mais escura
+      backgroundColor: const Color(0xFF0A4E58),
       appBar: AppBar(
         title: const Text("A.D.C - Antes de Dirigir Check ✔"),
         centerTitle: true,
-        leading: const Icon(Icons.check_box ),
+        leading: const Icon(Icons.check_box),
         backgroundColor: const Color(0xFF0f6b79),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Imagem do carro
-            // "Showroom" circular com imagem
+            // Showroom circular com imagem do carro
             Container(
               width: 300,
               height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF083E47), // tom mais escuro que o fundo
+                color: const Color(0xFF083E47),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),
@@ -41,26 +80,25 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               padding: const EdgeInsets.all(16),
               child: ClipOval(
-                child: Image.asset(
-                  'assets/carros/parati.png',
-                  fit: BoxFit.contain,
-                ),
+                child: _lastCarImagePath != null
+                    ? Image.file(File(_lastCarImagePath!), fit: BoxFit.cover)
+                    : Image.asset('assets/carros/parati.png', fit: BoxFit.contain),
               ),
             ),
 
-            // Botão para a página de checklist
+            const SizedBox(height: 32),
+
+            // Botão para o checklist
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 217, 238, 242),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 textStyle: const TextStyle(fontSize: 18),
               ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const ChecklistPage()),
+                  MaterialPageRoute(builder: (context) => const ChecklistPage()),
                 );
               },
               icon: const Icon(Icons.checklist),
@@ -71,20 +109,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         selectedItemColor: const Color(0xFF0f6b79),
         items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.car_crash_outlined), label: "Seu Carro"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search_rounded), label: "Ajuda"),
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.car_crash_outlined), label: "Seu Carro"),
+          BottomNavigationBarItem(icon: Icon(Icons.search_rounded), label: "Ajuda"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Configurações"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Configurações"),
         ],
       ),
     );
   }
 }
-
