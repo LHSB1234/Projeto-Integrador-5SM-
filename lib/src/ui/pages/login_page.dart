@@ -35,7 +35,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 30),
                   const Text(
                     "Digite os dados de acesso nos campos abaixo.",
-                    style: TextStyle(color: Color.fromARGB(255, 197, 197, 197), fontSize: 16),
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 197, 197, 197),
+                        fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),

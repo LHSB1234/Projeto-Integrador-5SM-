@@ -11,7 +11,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      routerConfig: MyRoutes().rotas,
+      routerConfig: rotas,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:adc/src/domain/models/checklistItem_model.dart'; // Altere para seu caminho real
 
 class ChecklistPage extends StatefulWidget {
   const ChecklistPage({super.key});
@@ -9,34 +10,22 @@ class ChecklistPage extends StatefulWidget {
 }
 
 class _ChecklistPageState extends State<ChecklistPage> {
-  // Lista de itens com seus estados (null = não respondido, true = ok, false = problema)
-  final List<Map<String, dynamic>> checklist = [
-    {'title': 'Pressão dos pneus', 'status': null, 'icon': Icons.tire_repair},
-    {'title': 'Nível do óleo', 'status': null, 'icon': Icons.oil_barrel},
-    {'title': 'Pneus carecas', 'status': null, 'icon': Icons.warning_amber},
-    {'title': 'Luzes funcionando', 'status': null, 'icon': Icons.lightbulb},
-    {
-      'title': 'Freios respondendo bem',
-      'status': null,
-      'icon': Icons.directions_car
-    },
-    {'title': 'Documentação em dia', 'status': null, 'icon': Icons.description},
-    {
-      'title': 'Limpador de para-brisa',
-      'status': null,
-      'icon': Icons.water_drop
-    },
-    {
-      'title': 'Combustível suficiente',
-      'status': null,
-      'icon': Icons.local_gas_station
-    },
-    {'title': 'Estepe e Ferramentas', 'status': null, 'icon': Icons.handyman},
+  final List<ChecklistItem> checklist = [
+    ChecklistItem(title: 'Pressão dos pneus', icon: Icons.tire_repair),
+    ChecklistItem(title: 'Nível do óleo', icon: Icons.oil_barrel),
+    ChecklistItem(title: 'Pneus carecas', icon: Icons.warning_amber),
+    ChecklistItem(title: 'Luzes funcionando', icon: Icons.lightbulb),
+    ChecklistItem(title: 'Freios respondendo bem', icon: Icons.directions_car),
+    ChecklistItem(title: 'Documentação em dia', icon: Icons.description),
+    ChecklistItem(title: 'Limpador de para-brisa', icon: Icons.water_drop),
+    ChecklistItem(
+        title: 'Combustível suficiente', icon: Icons.local_gas_station),
+    ChecklistItem(title: 'Estepe e Ferramentas', icon: Icons.handyman),
   ];
 
   void updateStatus(int index, bool status) {
     setState(() {
-      checklist[index]['status'] = status;
+      checklist[index].status = status;
     });
   }
 
@@ -90,9 +79,9 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 final item = checklist[index];
                 Color? tileColor;
 
-                if (item['status'] == true) {
+                if (item.status == true) {
                   tileColor = Colors.green.withOpacity(0.2);
-                } else if (item['status'] == false) {
+                } else if (item.status == false) {
                   tileColor = Colors.red.withOpacity(0.2);
                 }
 
@@ -102,9 +91,9 @@ class _ChecklistPageState extends State<ChecklistPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                   child: ListTile(
-                    leading: Icon(item['icon'], color: Colors.white),
+                    leading: Icon(item.icon, color: Colors.white),
                     title: Text(
-                      item['title'],
+                      item.title,
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     trailing: Row(
@@ -121,13 +110,10 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           onPressed: () {
                             updateStatus(index, false);
 
-                            // Verifica se o item é "Pneus carecas"
-                            if (checklist[index]['title'] == 'Pneus carecas') {
-                              // Exibe o popup com sugestões de pneus
+                            if (item.title == 'Pneus carecas') {
                               showDialog(
                                 context: context,
-                                barrierDismissible:
-                                    true, // Pode fechar o popup clicando fora
+                                barrierDismissible: true,
                                 builder: (context) => AlertDialog(
                                   backgroundColor: const Color(0xFF0f6b79),
                                   title: const Text(
@@ -143,10 +129,9 @@ class _ChecklistPageState extends State<ChecklistPage> {
                                       ),
                                       const SizedBox(height: 16),
                                       ElevatedButton(
-                                        onPressed:
-                                            _abrirSugestoesDePneus, // Função que abre o Google Shopping
+                                        onPressed: _abrirSugestoesDePneus,
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.orange, // Cor do botão
+                                          backgroundColor: Colors.orange,
                                         ),
                                         child: const Text(
                                           "Ver Pneus no Google Shopping",
