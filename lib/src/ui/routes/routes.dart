@@ -2,6 +2,7 @@ import 'package:adc/src/ui/pages/car_page.dart';
 import 'package:adc/src/ui/pages/login_page.dart';
 import 'package:adc/src/ui/pages/page_home.dart';
 import 'package:adc/src/ui/pages/car_register_page.dart';
+import 'package:adc/src/ui/pages/profile_page.dart'; // <-- Importe a ProfilePage
 import 'package:adc/src/ui/pages/report_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,6 +28,11 @@ final GoRouter rotas = GoRouter(
     GoRoute(
       path: '/reportscreen',
       builder: (context, state) => const ReportScreen(),
-    )
+    ),
+    // ✅ Garanta que esta linha está aqui:
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfilePage(),
+    ),
   ],
 );

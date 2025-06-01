@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ReportScreen extends StatefulWidget {
-  const ReportScreen({Key? key}) : super(key: key);
+  const ReportScreen({super.key});
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
@@ -17,15 +17,16 @@ class _ReportScreenState extends State<ReportScreen> {
     '/profile',
     '/settings'
   ];
+
   int getCurrentIndex(BuildContext context) {
-    final location =
-        GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final route = GoRouter.of(context).routerDelegate.currentConfiguration;
+    final String location =
+        route.uri.toString(); // Pega a rota atual como string
     final index = _routes.indexOf(location);
-    return index < 0 ? 0 : index;
+    return index >= 0 ? index : 0;
   }
 
   // Exemplo de dados mockados para o relatório
-  // Em uma aplicação real, você carregaria isso de uma fonte de dados
   List<String> _reportData = [];
   bool _isLoading = true;
 
@@ -61,7 +62,8 @@ class _ReportScreenState extends State<ReportScreen> {
           ? const Center(child: CircularProgressIndicator())
           : _reportData.isEmpty
               ? const Center(
-                  child: Text("Nenhum dado de relatório encontrado."))
+                  child: Text("Nenhum dado de relatório encontrado."),
+                )
               : ListView.builder(
                   padding: const EdgeInsets.all(16.0),
                   itemCount: _reportData.length,
