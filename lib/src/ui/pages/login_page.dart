@@ -31,20 +31,26 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 60), // espaço do topo
-                  Image.asset('assets/banners/Logo_ADC_Semfundo.png', width: 192),
+                  Image.asset('assets/banners/Logo_ADC_Semfundo.png',
+                      width: 192),
                   const SizedBox(height: 30),
                   const Text(
                     "Digite os dados de acesso nos campos abaixo.",
-                    style: TextStyle(color: Color.fromARGB(255, 197, 197, 197), fontSize: 16),
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 197, 197, 197),
+                        fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
                   CupertinoTextField(
                     padding: const EdgeInsets.all(15),
                     placeholder: "Digite o seu e-mail",
-                    placeholderStyle:
-                        const TextStyle(color: Color.fromARGB(255, 197, 197, 197), fontSize: 14),
-                    style: const TextStyle(color: Color.fromARGB(221, 222, 221, 221), fontSize: 14),
+                    placeholderStyle: const TextStyle(
+                        color: Color.fromARGB(255, 197, 197, 197),
+                        fontSize: 14),
+                    style: const TextStyle(
+                        color: Color.fromARGB(221, 222, 221, 221),
+                        fontSize: 14),
                     decoration: const BoxDecoration(
                       color: Colors.black12,
                       borderRadius: BorderRadius.all(Radius.circular(7)),
@@ -55,8 +61,9 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.all(15),
                     placeholder: "Digite sua senha",
                     obscureText: true,
-                    placeholderStyle:
-                        const TextStyle(color: Color.fromARGB(255, 197, 197, 197), fontSize: 14),
+                    placeholderStyle: const TextStyle(
+                        color: Color.fromARGB(255, 197, 197, 197),
+                        fontSize: 14),
                     style: const TextStyle(color: Colors.black87, fontSize: 14),
                     decoration: const BoxDecoration(
                       color: Colors.black12,
@@ -113,24 +120,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.all(5),
-                      ),
-                      Ink(
-                        decoration: const ShapeDecoration(
-                          color: Cores.ConstrasteComfundo,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                          ),
-                        ),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            FontAwesomeIcons.facebook,
-                            color: Cores.CorDeDestaque,
-                          ),
-                          padding: const EdgeInsets.all(12),
-                          iconSize: 30.0,
-                        ),
                       ),
                     ],
                   ),

@@ -1,36 +1,36 @@
+import 'package:adc/src/ui/_core/widgets/my_appbar.dart';
+import 'package:adc/src/ui/_core/widgets/my_navigationbar.dart';
 import 'package:flutter/material.dart';
-// ignore: unused_import
 import 'checklist_page.dart';
+
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage(
+      {super.key}); // Construtor const recomendado para StatefulWidget
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex =
+      0; // variável de estado deve ficar na State, não no Widget
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0A4E58), // Cor um pouco mais escura
-      appBar: AppBar(
-        title: const Text("A.D.C - Antes de Dirigir Check ✔"),
-        centerTitle: true,
-        leading: const Icon(Icons.check_box ),
-        backgroundColor: const Color(0xFF0f6b79),
-      ),
+      appBar: const MyAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Imagem do carro
-            // "Showroom" circular com imagem
+            // Imagem do carro circular
             Container(
               width: 300,
               height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF083E47), // tom mais escuro que o fundo
+                color: const Color(0xFF083E47),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),
@@ -47,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+
+            const SizedBox(height: 24),
 
             // Botão para a página de checklist
             ElevatedButton.icon(
@@ -69,22 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF0f6b79),
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.car_crash_outlined), label: "Seu Carro"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search_rounded), label: "Ajuda"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Configurações"),
-        ],
+      bottomNavigationBar: MyNavigationBar(
+        currentIndex: _selectedIndex,
       ),
     );
   }
 }
-
