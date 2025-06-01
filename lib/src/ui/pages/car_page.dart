@@ -11,7 +11,13 @@ class CarPage extends StatefulWidget {
 }
 
 class _CarPageState extends State<CarPage> {
-  static const _routes = ['/', '/car', '/help', '/profile', '/settings'];
+  static const _routes = [
+    '/',
+    '/car',
+    '/reportscreen',
+    '/profile',
+    '/settings'
+  ];
   int getCurrentIndex(BuildContext context) {
     final location =
         GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;

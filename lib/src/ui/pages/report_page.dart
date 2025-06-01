@@ -1,4 +1,6 @@
+import 'package:adc/src/ui/_core/widgets/my_navigationbar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -8,6 +10,20 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
+  static const _routes = [
+    '/',
+    '/car',
+    '/reportscreen',
+    '/profile',
+    '/settings'
+  ];
+  int getCurrentIndex(BuildContext context) {
+    final location =
+        GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    final index = _routes.indexOf(location);
+    return index < 0 ? 0 : index;
+  }
+
   // Exemplo de dados mockados para o relatório
   // Em uma aplicação real, você carregaria isso de uma fonte de dados
   List<String> _reportData = [];
@@ -63,6 +79,9 @@ class _ReportScreenState extends State<ReportScreen> {
                     );
                   },
                 ),
+      bottomNavigationBar: MyNavigationBar(
+        currentIndex: getCurrentIndex(context),
+      ),
     );
   }
 }
