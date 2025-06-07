@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:adc/src/ui/_core/widgets/my_appbar.dart'; // Importe sua AppBar customizada
+import 'package:adc/src/ui/_core/widgets/my_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CarRegisterPage extends StatefulWidget {
   const CarRegisterPage({super.key});
@@ -79,33 +80,41 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
     }
   }
 
-  void _saveCar() {
-    if (selectedMarca != null &&
-        selectedModelo != null &&
-        selectedAno != null) {
-      final carInfo = {
-        'nomeFantasia': _nomeFantasiaController.text,
-        'marca':
-            marcas.firstWhere((e) => e['codigo'] == selectedMarca)['nome'] ??
-                '',
-        'modelo':
-            modelos.firstWhere((e) => e['codigo'] == selectedModelo)['nome'] ??
-                '',
-        'ano': anos.firstWhere((e) => e['codigo'] == selectedAno)['nome'] ?? '',
-      };
+  Future<void> _saveCar() async {
+  if (selectedMarca != null &&
+      selectedModelo != null &&
+      selectedAno != null) {
+    final carInfo = {
+      'nomeFantasia': _nomeFantasiaController.text,
+      'marca': marcas
+              .firstWhere((e) => e['codigo'] == selectedMarca)['nome'] ??
+          '',
+      'modelo': modelos
+              .firstWhere((e) => e['codigo'] == selectedModelo)['nome'] ??
+          '',
+      'ano': anos
+              .firstWhere((e) => e['codigo'] == selectedAno)['nome'] ??
+          '',
+    };
 
-      debugPrint('Carro salvo: $carInfo');
-      context.go('/car'); // Altere para a rota desejada após salvar
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('carro_cadastrado', true);
+    await prefs.setString('modelo_carro', carInfo['modelo']!);
+    await prefs.setString('imagem_carro', '${carInfo['modelo']!.replaceAll(" ", "")}.png');
+
+    debugPrint('Carro salvo: $carInfo');
+    context.go('/car');
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
           'Preencha todos os campos obrigatórios!',
           style: TextStyle(color: Colors.white),
-        )),
-      );
-    }
+        ),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -121,20 +130,18 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
 
     const inputStyle = TextStyle(color: Colors.white);
     const labelStyle = TextStyle(color: Colors.white70);
-    const primaryColor = Color(0xFF0A4E58); // Cor principal do tema
-    const secondaryColor = Color(0xFF083E47); // Cor secundária para elementos
-    const accentColor =
-        Color.fromARGB(255, 217, 238, 242); // Cor de destaque para botões
+    const primaryColor = Color(0xFF0A4E58);
+    const secondaryColor = Color(0xFF083E47);
+    const accentColor = Color.fromARGB(255, 217, 238, 242);
 
     return Scaffold(
       backgroundColor: primaryColor,
-      appBar: const MyAppBar(), // Usando sua AppBar customizada
+      appBar: const MyAppBar(),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24), // Aumenta o padding
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Título da página
             const Text(
               'Cadastre seu Veículo',
               style: TextStyle(
@@ -145,37 +152,12 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
             ),
             const SizedBox(height: 24),
 
-            // Nome Fantasia
+            // Campo nome fantasia
             TextField(
               controller: _nomeFantasiaController,
               style: inputStyle,
               decoration: InputDecoration(
                 labelText: 'Nome Fantasia (Opcional)',
-                labelStyle: labelStyle,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12), // Bordas arredondadas
-                  borderSide: const BorderSide(color: Colors.white24),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.white24),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: accentColor), // Foco na cor de destaque
-                ),
-                fillColor: secondaryColor, // Fundo do TextField
-                filled: true,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Busca Marca
-            TextField(
-              onChanged: (value) => setState(() => searchMarca = value),
-              style: inputStyle,
-              decoration: InputDecoration(
-                labelText: 'Pesquisar Marca',
                 labelStyle: labelStyle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -193,20 +175,19 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
                 filled: true,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
 
-            // Dropdown Marca
+            // Dropdown marca
             DropdownButtonFormField<String>(
               value: selectedMarca,
-              dropdownColor: secondaryColor, // Cor de fundo do dropdown
-              style: inputStyle, // Estilo do texto dos itens
-              iconEnabledColor: Colors.white70, // Cor do ícone do dropdown
+              dropdownColor: secondaryColor,
+              style: inputStyle,
+              iconEnabledColor: Colors.white70,
               decoration: InputDecoration(
                 labelText: 'Marca',
                 labelStyle: labelStyle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.white24),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -239,32 +220,8 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
             ),
             const SizedBox(height: 24),
 
-            // Busca Modelo
-            TextField(
-              onChanged: (value) => setState(() => searchModelo = value),
-              style: inputStyle,
-              decoration: InputDecoration(
-                labelText: 'Pesquisar Modelo',
-                labelStyle: labelStyle,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.white24),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.white24),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: accentColor),
-                ),
-                fillColor: secondaryColor,
-                filled: true,
-              ),
-            ),
-            const SizedBox(height: 16),
 
-            // Dropdown Modelo
+            // Dropdown modelo
             DropdownButtonFormField<String>(
               value: selectedModelo,
               dropdownColor: secondaryColor,
@@ -275,7 +232,6 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
                 labelStyle: labelStyle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.white24),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -300,14 +256,14 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
                   selectedAno = null;
                   anos = [];
                 });
-                if (value != null && selectedMarca != null) {
+                if (selectedMarca != null && value != null) {
                   fetchAnos(selectedMarca!, value);
                 }
               },
             ),
             const SizedBox(height: 24),
 
-            // Dropdown Ano
+            // Dropdown ano
             DropdownButtonFormField<String>(
               value: selectedAno,
               dropdownColor: secondaryColor,
@@ -318,7 +274,6 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
                 labelStyle: labelStyle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.white24),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -343,29 +298,24 @@ class _CarRegisterPageState extends State<CarRegisterPage> {
                 });
               },
             ),
-            const SizedBox(height: 48), // Aumenta o espaço antes do botão
+            const SizedBox(height: 32),
 
-            // Botão Salvar
+            // Botão salvar
             Center(
-              child: ElevatedButton.icon(
+              child: ElevatedButton(
                 onPressed: _saveCar,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: accentColor,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 18), // Aumenta o padding do botão
+                  foregroundColor: primaryColor,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 40, vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30), // Botão mais arredondado
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  elevation: 8, // Adiciona sombra para um efeito 3D
                 ),
-                icon: const Icon(Icons.save, color: primaryColor), // Ícone com a cor principal
-                label: const Text(
-                  'Salvar e Continuar',
-                  style: TextStyle(
-                    color: primaryColor, // Texto com a cor principal
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: const Text(
+                  'Avançar',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ),

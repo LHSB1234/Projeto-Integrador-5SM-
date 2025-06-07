@@ -1,6 +1,6 @@
 class AppRoutes {
   static const home = '/';
-  static const car = '/car';
+  static const car = '/registercar';
   static const report = '/reportscreen';
   static const profile = '/profile';
   static const settings = '/settings';

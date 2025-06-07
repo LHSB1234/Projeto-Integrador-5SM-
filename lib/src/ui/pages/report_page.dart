@@ -2,7 +2,8 @@ import 'package:adc/src/ui/_core/widgets/my_appbar.dart'; // Importe sua AppBar 
 import 'package:adc/src/ui/_core/widgets/my_navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
+// ignore: unused_import
+import 'package:adc/src/data/checklist_data.dart';
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
 
@@ -39,28 +40,13 @@ class _ReportScreenState extends State<ReportScreen> {
   bool _isLoading = true;
 
   @override
-  void initState() {
-    super.initState();
-    _loadReportData();
-  }
+void initState() {
+  super.initState();
+  _reportData = ChecklistData().getReport();
+  _isLoading = false;
+}
 
-  Future<void> _loadReportData() async {
-    // Simula um carregamento de dados
-    await Future.delayed(
-        const Duration(seconds: 2)); // Atraso para simular carregamento
-    setState(() {
-      _reportData = [
-        "Data: 2025-05-30, Viagem: 120km, Consumo: 10L",
-        "Data: 2025-05-29, Viagem: 80km, Consumo: 7L",
-        "Data: 2025-05-28, Viagem: 50km, Consumo: 4L",
-        "Data: 2025-05-27, Viagem: 200km, Consumo: 18L",
-        "Data: 2025-05-26, Viagem: 95km, Consumo: 8.5L",
-        "Data: 2025-05-25, Viagem: 60km, Consumo: 5L",
-        "Data: 2025-05-24, Viagem: 150km, Consumo: 13L",
-      ];
-      _isLoading = false;
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

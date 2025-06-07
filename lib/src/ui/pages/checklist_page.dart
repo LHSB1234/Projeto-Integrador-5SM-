@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:adc/src/domain/models/checklistItem_model.dart'; // Altere para seu caminho real
-
+import 'package:adc/src/data/checklist_data.dart';
 class ChecklistPage extends StatefulWidget {
   const ChecklistPage({super.key});
 
@@ -18,8 +18,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
     ChecklistItem(title: 'Freios respondendo bem', icon: Icons.directions_car),
     ChecklistItem(title: 'Documentação em dia', icon: Icons.description),
     ChecklistItem(title: 'Limpador de para-brisa', icon: Icons.water_drop),
-    ChecklistItem(
-        title: 'Combustível suficiente', icon: Icons.local_gas_station),
+    ChecklistItem(title: 'Combustível suficiente', icon: Icons.local_gas_station),
     ChecklistItem(title: 'Estepe e Ferramentas', icon: Icons.handyman),
   ];
 
@@ -29,10 +28,18 @@ class _ChecklistPageState extends State<ChecklistPage> {
     });
   }
 
-  Future<void> _abrirSugestoesDePneus() async {
-    final url =
-        Uri.parse('https://www.google.com/search?tbm=shop&q=compra+pneu+carro');
+  // Método para gerar o resumo do checklist para o relatório
+  List<String> generateReportSummary() {
+    return checklist.map((item) {
+      String statusStr = item.status == null
+          ? "Não avaliado"
+          : (item.status! ? "OK" : "Problema");
+      return "${item.title}: $statusStr";
+    }).toList();
+  }
 
+  Future<void> _abrirSugestoesDePneus() async {
+    final url = Uri.parse('https://www.google.com/search?tbm=shop&q=compra+pneu+carro');
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
@@ -40,26 +47,27 @@ class _ChecklistPageState extends State<ChecklistPage> {
     }
   }
 
+  // ignore: unused_element
   void _showSuccessDialogAndReturnHome() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF0f6b79),
-        title: const Text("Checklist Concluído ✅",
-            style: TextStyle(color: Colors.white)),
-        content: const Text(
-          "Parabéns! Você está pronto para dirigir com segurança!",
-          style: TextStyle(color: Colors.white),
-        ),
+     ChecklistData().updateFromChecklist(generateReportSummary());
+   showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => AlertDialog(
+      backgroundColor: const Color(0xFF0f6b79),
+      title: const Text("Checklist Concluído ✅", style: TextStyle(color: Colors.white)),
+      content: const Text(
+        "Parabéns! Você está pronto para dirigir com segurança!",
+        style: TextStyle(color: Colors.white),
       ),
-    );
+    ),
+  );
 
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.of(context).pop(); // Fecha o dialog
-      Navigator.of(context).pop(); // Retorna para a Home
-    });
-  }
+  Future.delayed(const Duration(seconds: 5), () {
+    Navigator.of(context).pop(); // Fecha o dialog
+    Navigator.of(context).pop(); // Volta para a Home
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -159,8 +167,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
               onPressed: _showSuccessDialogAndReturnHome,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 217, 238, 242),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                 textStyle: const TextStyle(fontSize: 18, color: Colors.white),
               ),
               icon: const Icon(Icons.check),

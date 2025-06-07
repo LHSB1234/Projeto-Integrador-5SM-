@@ -11,7 +11,7 @@ class MyNavigationBar extends StatelessWidget {
 
   static const List<String> _routes = [
     '/',
-    '/car',
+    '/registercar',
     '/reportscreen',
     '/profile',
     '/settings',

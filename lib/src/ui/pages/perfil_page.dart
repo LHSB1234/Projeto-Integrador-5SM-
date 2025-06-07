@@ -1,17 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PerfilPage extends StatelessWidget {
   const PerfilPage({super.key});
+static const _routes = [
+    '/',
+    '/car',
+    '/reportscreen',
+    '/profile',
+    '/settings'
+  ];
 
+  final Color primaryColor = const Color(0xFF0A4E58);
+  final Color secondaryColor = const Color(0xFF083E47);
+  final Color accentColor = const Color.fromARGB(255, 217, 238, 242);
+
+  int getCurrentIndex(BuildContext context) {
+    final route = GoRouter.of(context).routerDelegate.currentConfiguration;
+    final String location = route.uri.toString();
+    final index = _routes.indexOf(location);
+    return index >= 0 ? index : 0;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0A4E58),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0f6b79),
-        title: const Text('Seu Perfil'),
-        centerTitle: true,
-      ),
+  backgroundColor: const Color(0xFF0f6b79),
+  title: const Text('Seu Perfil'),
+  centerTitle: true,
+  leading: IconButton(
+    icon: const Icon(Icons.arrow_back),
+    onPressed: () {
+      context.go('/');
+    },
+  ),
+),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -44,7 +68,7 @@ class PerfilPage extends StatelessWidget {
 
               // Nome
               const Text(
-                "João Victor Barros",
+                "João Victor",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 22,
@@ -67,7 +91,7 @@ class PerfilPage extends StatelessWidget {
 
               // Email
               const Text(
-                "joaovictorbarroslepore@gmail.com",
+                "joaovictor@gmail.com",
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
